@@ -1,0 +1,2 @@
+cl100k_base: EN=39 VI=103 ratio=2.64
+o200k_base: EN=37 VI=65 ratio=1.76
