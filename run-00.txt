@@ -1,0 +1,42 @@
+Đây là một lỗi nghiêm trọng và ảnh hưởng trực tiếp đến doanh thu. Khi phân loại, bạn cần làm rõ cả **mức độ nghiêm trọng (Severity)**, **chủ đề/module bị lỗi (Component)**, và **bản chất của vấn đề (Type)**.
+
+Dưới đây là các cách phân loại tùy thuộc vào hệ thống quản lý của bạn (Jira, Trello, hoặc chỉ là ticket đơn giản):
+
+---
+
+### 🏷️ Lựa chọn 1: Phân loại cho đội ngũ Phát triển (Technical/Dev Team)
+
+Đây là cách chi tiết và kỹ thuật nhất để giúp lập trình viên biết chính xác nơi cần bắt đầu tìm kiếm.
+
+| Trường (Field) | Giá trị đề xuất (Suggested Value) | Giải thích/Lý do |
+| :--- | :--- | :--- |
+| **Type / Issue Type** | Bug (Lỗi) | Đây là lỗi đã tồn tại hoặc mới xuất hiện cần được sửa. |
+| **Severity** | Blocker / Critical (Nghiêm trọng nhất) | Vì lỗi ngăn chặn hoàn toàn giao dịch thanh toán, nó là vật cản lớn nhất của sản phẩm. |
+| **Priority** | Highest / Immediate Fix (Ưu tiên cao nhất) | Cần được xử lý ngay lập tức vì nó đang gây mất doanh thu. |
+| **Component / Module** | Payment Gateway / Checkout Service (Trình thanh toán/Dịch vụ Thanh toán) | Xác định chính xác nơi xảy ra lỗi. |
+| **Summary / Title** | `[Payment] HTTP 500 error on checkout page for all Visa cards since [Time]` | Tóm tắt vấn đề cốt lõi một cách rõ ràng. |
+
+### 🏷️ Lựa chọn 2: Phân loại cho Quản lý sản phẩm (Product Manager/Stakeholder)
+
+Nếu bạn cần truyền đạt vấn đề này lên cấp trên hoặc đội ngũ kinh doanh, hãy tập trung vào ảnh hưởng nghiệp vụ.
+
+*   **Vấn đề cốt lõi:** Không thể hoàn thành giao dịch thanh toán (Checkout blockage).
+*   **Tác động:** Mất doanh thu nghiêm trọng.
+*   **Yêu cầu hành động:** Cần đội kỹ thuật khẩn cấp điều tra backend.
+
+### 🔍 Phân tích chuyên sâu về lỗi này (Quan trọng nhất)
+
+Vì bạn đang gặp mã **HTTP 500** và lỗi này xảy ra trên toàn bộ các thẻ Visa, điều đó gần như chắc chắn là một vấn đề **Backend Server** hoặc **Integration Layer** chứ không phải lỗi ở phía người dùng (Client side) hay ngân hàng.
+
+**Những điểm cần làm rõ trước khi đưa cho Dev:**
+
+1.  **Server Logs (Log máy chủ):** Yêu cầu đội ngũ kỹ thuật kiểm tra log server tại thời điểm sau 14:30. HTTP 500 là lỗi chung, nhưng log server sẽ cho biết nguyên nhân sâu xa (ví dụ: hết bộ nhớ, database timeout, lỗi code khi gọi API của cổng thanh toán, v.v.).
+2.  **Payment Gateway Log (Log Cổng thanh toán):** Kiểm tra xem liệu cổng thanh toán có nhận được request hợp lệ từ bạn hay không, và phản hồi lỗi 500 đó là do server của bạn gửi đi trước khi cổng thanh toán kịp xử lý, hay là lỗi từ chính cổng đó.
+
+---
+
+### 🚀 Tóm tắt về các nhãn cần sử dụng (Checklist)
+
+Nếu bạn phải chọn một nhãn duy nhất cho ticket này, hãy sử dụng:
+
+**`[BLOCKER] Payment Failure - HTTP 500 Server Error (Visa)`**
